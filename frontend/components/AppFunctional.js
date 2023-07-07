@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {useState} from 'react'
 // Suggested initial states
 const initialMessage = ''
 const initialEmail = ''
@@ -9,6 +9,10 @@ const initialIndex = 4 // the index the "B" is at
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
+  const [indexOfB, setIndexOfB] = useState(6);
+  const [emailVal, setEmailVal] = useState('');
+  const [steps, setSteps] = useState(0);
+  const [message, setMessage] = useState('');
 
   function getXY() {
     // It it not necessary to have a state to track the coordinates.
@@ -21,7 +25,9 @@ export default function AppFunctional(props) {
     // returns the fully constructed string.
   }
 
-  function reset() {
+  function reset(e) {
+    e.preventDefault();
+    setIndexOfB(4);
     // Use this helper to reset all states to their initial values.
   }
 
@@ -36,42 +42,57 @@ export default function AppFunctional(props) {
     // and change any states accordingly.
   }
 
-  function onChange(evt) {
-    // You will need this to update the value of the input.
+  function onChange(e) {
+    // e.preventDefault();
+    setEmailVal(e.target.value);
+    
   }
 
-  function onSubmit(evt) {
+  function onSubmit(e) {
+    e.preventDefault();
     // Use a POST request to send a payload to the server.
   }
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
+        {/* change coordinates and steps to dynamic vars from state */}
         <h3 id="coordinates">Coordinates (2, 2)</h3>
         <h3 id="steps">You moved 0 times</h3>
       </div>
       <div id="grid">
         {
           [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
+            //change 4 to dynamic value i.e. index of b
+            <div key={idx} className={`square${idx === indexOfB ? ' active' : ''}`}>
+              {idx === indexOfB ? 'B' : null}
             </div>
           ))
         }
       </div>
       <div className="info">
-        <h3 id="message"></h3>
+         <h3 id="message">{/*add message errors*/}</h3>
       </div>
       <div id="keypad">
         <button id="left">LEFT</button>
         <button id="up">UP</button>
         <button id="right">RIGHT</button>
         <button id="down">DOWN</button>
-        <button id="reset">reset</button>
+        <button id="reset" onClick={reset}>reset</button>
       </div>
-      <form>
-        <input id="email" type="email" placeholder="type email"></input>
-        <input id="submit" type="submit"></input>
+      <form onSubmit={onSubmit}>
+        <input 
+          id="email" 
+          type="email" 
+          placeholder="type email"
+          value={emailVal}
+          onChange={onChange}
+          />
+        
+        <input 
+          id="submit" 
+          type="submit"
+          />
       </form>
     </div>
   )
