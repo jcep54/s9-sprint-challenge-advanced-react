@@ -9,7 +9,7 @@ const initialIndex = 4 // the index the "B" is at
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-  const [indexOfB, setIndexOfB] = useState(6);
+  const [indexOfB, setIndexOfB] = useState(7);
   const [emailVal, setEmailVal] = useState('');
   const [steps, setSteps] = useState(0);
   const [message, setMessage] = useState('');
@@ -32,12 +32,43 @@ export default function AppFunctional(props) {
   }
 
   function getNextIndex(direction) {
+    console.log(direction.target.id);
+    const jump = direction.target.id;
+    //up move
+    if (jump === 'up'){
+      if (indexOfB<3)
+        move(indexOfB)
+      else
+        move(indexOfB-3)
+    }
+    //down move
+    if (jump === 'down'){
+      if (indexOfB>5)
+        move(indexOfB)
+      else
+        move(indexOfB+3)
+    }
+    //left move
+    if (jump === 'left'){
+      if (indexOfB%3 === 0)
+        move(indexOfB)
+      else
+        move(indexOfB-1)
+    }
+    //right move
+    if (jump === 'right'){
+      if ([2,5,8].includes(indexOfB))
+        move(indexOfB)
+      else
+        move(indexOfB+1)
+    }
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
   }
 
-  function move(evt) {
+  function move(newIndx) {
+    setIndexOfB(newIndx)
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
   }
@@ -74,10 +105,10 @@ export default function AppFunctional(props) {
          <h3 id="message">{/*add message errors*/}</h3>
       </div>
       <div id="keypad">
-        <button id="left">LEFT</button>
-        <button id="up">UP</button>
-        <button id="right">RIGHT</button>
-        <button id="down">DOWN</button>
+        <button id="left" onClick={getNextIndex}>LEFT</button>
+        <button id="up" onClick={getNextIndex}>UP</button>
+        <button id="right" onClick={getNextIndex}>RIGHT</button>
+        <button id="down" onClick={getNextIndex}>DOWN</button>
         <button id="reset" onClick={reset}>reset</button>
       </div>
       <form onSubmit={onSubmit}>
