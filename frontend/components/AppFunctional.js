@@ -17,12 +17,36 @@ export default function AppFunctional(props) {
   function getXY() {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
+    let xCoor = 2;
+    let yCoor = 2;
+    if([0,3,6].includes(indexOfB)){
+     xCoor = 1;
+    }
+    else if([1,4,7].includes(indexOfB)){
+     xCoor = 2;
+    }
+    else{
+     xCoor = 3;
+    }
+
+    if(indexOfB<3){
+     yCoor = 1;
+    }
+    else if(indexOfB>5){
+     yCoor = 3;
+    }
+    else{
+     yCoor = 2;
+    }
+    return [xCoor,yCoor]
   }
 
   function getXYMessage() {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
+    const [xCoor,yCoor] = getXY();
+    return `(${xCoor},${yCoor})`
   }
 
   function reset(e) {
@@ -75,7 +99,7 @@ export default function AppFunctional(props) {
   }
 
   function onChange(e) {
-    // e.preventDefault();
+    e.preventDefault();
     setEmailVal(e.target.value);
     
   }
@@ -89,7 +113,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         {/* change coordinates and steps to dynamic vars from state */}
-        <h3 id="coordinates">Coordinates (2, 2)</h3>
+        <h3 id="coordinates">Coordinates {getXYMessage()}</h3>
         <h3 id="steps">You moved {steps} times</h3>
       </div>
       <div id="grid">
