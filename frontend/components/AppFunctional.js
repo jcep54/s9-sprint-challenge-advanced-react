@@ -9,7 +9,7 @@ const initialIndex = 4 // the index the "B" is at
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
-  const [indexOfB, setIndexOfB] = useState(7);
+  const [indexOfB, setIndexOfB] = useState(4);
   const [emailVal, setEmailVal] = useState('');
   const [steps, setSteps] = useState(0);
   const [message, setMessage] = useState('');
@@ -28,37 +28,37 @@ export default function AppFunctional(props) {
   function reset(e) {
     e.preventDefault();
     setIndexOfB(4);
+    setSteps(0);
     // Use this helper to reset all states to their initial values.
   }
 
   function getNextIndex(direction) {
-    console.log(direction.target.id);
     const jump = direction.target.id;
     //up move
     if (jump === 'up'){
       if (indexOfB<3)
-        move(indexOfB)
+        console.log('invalid move')
       else
         move(indexOfB-3)
     }
     //down move
     if (jump === 'down'){
       if (indexOfB>5)
-        move(indexOfB)
+        console.log('invalid move')
       else
         move(indexOfB+3)
     }
     //left move
     if (jump === 'left'){
       if (indexOfB%3 === 0)
-        move(indexOfB)
+        console.log('invalid move')
       else
         move(indexOfB-1)
     }
     //right move
     if (jump === 'right'){
       if ([2,5,8].includes(indexOfB))
-        move(indexOfB)
+        console.log('invalid move')
       else
         move(indexOfB+1)
     }
@@ -68,6 +68,7 @@ export default function AppFunctional(props) {
   }
 
   function move(newIndx) {
+    setSteps(steps+1)
     setIndexOfB(newIndx)
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
@@ -89,7 +90,7 @@ export default function AppFunctional(props) {
       <div className="info">
         {/* change coordinates and steps to dynamic vars from state */}
         <h3 id="coordinates">Coordinates (2, 2)</h3>
-        <h3 id="steps">You moved 0 times</h3>
+        <h3 id="steps">You moved {steps} times</h3>
       </div>
       <div id="grid">
         {
