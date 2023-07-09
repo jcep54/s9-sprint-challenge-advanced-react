@@ -1,10 +1,7 @@
 import React from 'react'
 import {useState} from 'react'
-// Suggested initial states
-const initialMessage = ''
-const initialEmail = ''
-const initialSteps = 0
-const initialIndex = 4 // the index the "B" is at
+import axios from 'axios';
+
 
 export default function AppFunctional(props) {
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
@@ -54,6 +51,7 @@ export default function AppFunctional(props) {
     setIndexOfB(4);
     setSteps(0);
     setEmailVal('');
+    setMessage('');
     // Use this helper to reset all states to their initial values.
   }
 
@@ -108,6 +106,19 @@ export default function AppFunctional(props) {
 
   function onSubmit(e) {
     e.preventDefault();
+    const [xCoor, yCoor] = getXY();
+    setEmailVal('');
+    axios.post(`http://localhost:9000/api/result`,{ 
+      "x": xCoor,
+      "y": yCoor,
+      "steps": steps, 
+      "email":emailVal })
+      .then(res =>{
+        setMessage(res.data.message)
+      })
+      .catch(err =>{
+        console.error(err)
+      })
     // Use a POST request to send a payload to the server.
   }
 
