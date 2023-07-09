@@ -53,36 +53,38 @@ export default function AppFunctional(props) {
     e.preventDefault();
     setIndexOfB(4);
     setSteps(0);
+    setEmailVal('');
     // Use this helper to reset all states to their initial values.
   }
 
   function getNextIndex(direction) {
+    setMessage('')
     const jump = direction.target.id;
     //up move
     if (jump === 'up'){
       if (indexOfB<3)
-        console.log('invalid move')
+        setMessage(`You can't go up`)
       else
         move(indexOfB-3)
     }
     //down move
     if (jump === 'down'){
       if (indexOfB>5)
-        console.log('invalid move')
+      setMessage(`You can't go down`)
       else
         move(indexOfB+3)
     }
     //left move
     if (jump === 'left'){
       if (indexOfB%3 === 0)
-        console.log('invalid move')
+      setMessage(`You can't go left`)
       else
         move(indexOfB-1)
     }
     //right move
     if (jump === 'right'){
       if ([2,5,8].includes(indexOfB))
-        console.log('invalid move')
+      setMessage(`You can't go right`)
       else
         move(indexOfB+1)
     }
@@ -127,7 +129,7 @@ export default function AppFunctional(props) {
         }
       </div>
       <div className="info">
-         <h3 id="message">{/*add message errors*/}</h3>
+         <h3 id="message">{message}</h3>
       </div>
       <div id="keypad">
         <button id="left" onClick={getNextIndex}>LEFT</button>
