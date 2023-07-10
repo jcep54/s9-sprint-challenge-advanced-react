@@ -23,14 +23,33 @@ export default class AppClass extends React.Component {
   // You can delete them and build your own logic from scratch.
 
   getXY = () => {
-    // It it not necessary to have a state to track the coordinates.
-    // It's enough to know what index the "B" is at, to be able to calculate them.
+    let xCoor = 2;
+    let yCoor = 2;
+    if([0,3,6].includes(this.state.index)){
+     xCoor = 1;
+    }
+    else if([1,4,7].includes(this.state.index)){
+     xCoor = 2;
+    }
+    else{
+     xCoor = 3;
+    }
+
+    if(this.state.index<3){
+     yCoor = 1;
+    }
+    else if(this.state.index>5){
+     yCoor = 3;
+    }
+    else{
+     yCoor = 2;
+    }
+    return [xCoor,yCoor]
   }
 
   getXYMessage = () => {
-    // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
-    // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
-    // returns the fully constructed string.
+    const [xCoor,yCoor] = this.getXY();
+    return `(${xCoor},${yCoor})`
   }
 
   reset = (e) => {
@@ -39,32 +58,28 @@ export default class AppClass extends React.Component {
   }
 
   getNextIndex = (direction) => {
-    // This helper takes a direction ("left", "up", etc) and calculates what the next index
-    // of the "B" would be. If the move is impossible because we are at the edge of the grid,
-    // this helper should return the current index unchanged.
+    
     const jump = direction.target.id;
-    //up move
+    
     if (jump === 'up'){
       if (this.state.index<3)
         this.setState({...this.state, message:`You can't go up`})
       else
         this.move(this.state.index-3)
     }
-    //down move
+    
     if (jump === 'down'){
       if (this.state.index>5)
       this.setState({...this.state, message:`You can't go down`})
       else
         this.move(this.state.index+3)
     }
-    //left move
     if (jump === 'left'){
       if (this.state.index%3 === 0)
       this.setState({...this.state, message:`You can't go left`})
       else
         this.move(this.state.index-1)
     }
-    //right move
     if (jump === 'right'){
       if ([2,5,8].includes(this.state.index))
       this.setState({...this.state, message:`You can't go right`})
@@ -76,7 +91,7 @@ export default class AppClass extends React.Component {
   move = (newIndex) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
-    this.setState({...this.state, steps: this.state.steps +1, index: newIndex});
+    this.setState({...this.state, steps: this.state.steps +1, index: newIndex, message: ''});
   }
 
   onChange = (e) => {
@@ -93,7 +108,7 @@ export default class AppClass extends React.Component {
     return (
       <div id="wrapper" className={className}>
         <div className="info">
-          <h3 id="coordinates">Coordinates (2, 2)</h3>
+          <h3 id="coordinates">Coordinates {this.getXYMessage}</h3>
           <h3 id="steps">You moved 0 times</h3>
         </div>
         <div id="grid">
@@ -106,7 +121,7 @@ export default class AppClass extends React.Component {
           }
         </div>
         <div className="info">
-          <h3 id="message"></h3>
+          <h3 id="message">{this.state.message}</h3>
         </div>
         <div id="keypad">
           <button id="left" onClick={this.getNextIndex}>LEFT</button>
