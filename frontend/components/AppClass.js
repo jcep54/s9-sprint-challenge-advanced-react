@@ -14,6 +14,11 @@ const initialState = {
 }
 
 export default class AppClass extends React.Component {
+
+  constructor(){
+    super();
+    this.state = initialState;
+  }
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
@@ -38,16 +43,17 @@ export default class AppClass extends React.Component {
     // this helper should return the current index unchanged.
   }
 
-  move = (evt) => {
+  move = (e) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
   }
 
-  onChange = (evt) => {
-    // You will need this to update the value of the input.
+  onChange = (e) => {
+    e.preventDefault();
+    this.setState({...this.state, email: e.target.value});
   }
 
-  onSubmit = (evt) => {
+  onSubmit = (e) => {
     // Use a POST request to send a payload to the server.
   }
 
@@ -62,8 +68,8 @@ export default class AppClass extends React.Component {
         <div id="grid">
           {
             [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-              <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-                {idx === 4 ? 'B' : null}
+              <div key={idx} className={`square${idx === this.state.index ? ' active' : ''}`}>
+                {idx === this.state.index ? 'B' : null}
               </div>
             ))
           }
@@ -79,8 +85,14 @@ export default class AppClass extends React.Component {
           <button id="reset">reset</button>
         </div>
         <form>
-          <input id="email" type="email" placeholder="type email"></input>
-          <input id="submit" type="submit"></input>
+          <input 
+          id="email" 
+          type="email"
+          placeholder="type email"
+          value={this.state.email}
+          onChange={this.onChange}
+          />
+          <input id="submit" type="submit"/>
         </form>
       </div>
     )
