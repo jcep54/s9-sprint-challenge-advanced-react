@@ -127,7 +127,7 @@ export default function AppFunctional(props) {
       <div className="info">
         {/* change coordinates and steps to dynamic vars from state */}
         <h3 id="coordinates">Coordinates {getXYMessage()}</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">You moved {steps} {steps === 1? 'time':'times'}</h3>
       </div>
       <div id="grid">
         {

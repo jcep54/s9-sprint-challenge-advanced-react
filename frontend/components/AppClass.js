@@ -103,7 +103,7 @@ export default class AppClass extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     const [xCoor, yCoor] = this.getXY();
-    this.setState({...this.state, email: ''})
+    this.setState({...this.state, email: '', index: 4, steps:0})
     axios.post(`http://localhost:9000/api/result`,{ 
       "x": xCoor,
       "y": yCoor,
@@ -115,6 +115,7 @@ export default class AppClass extends React.Component {
       .catch(err =>{
         console.error(err)
       })
+    
   }
 
   render() {
@@ -122,8 +123,8 @@ export default class AppClass extends React.Component {
     return (
       <div id="wrapper" className={className}>
         <div className="info">
-          <h3 id="coordinates">Coordinates {this.getXYMessage}</h3>
-          <h3 id="steps">You moved 0 times</h3>
+          <h3 id="coordinates">Coordinates {this.getXYMessage()}</h3>
+          <h3 id="steps">You moved {this.state.steps} {this.state.steps === 1? 'time':'times'}</h3>
         </div>
         <div id="grid">
           {
@@ -144,7 +145,7 @@ export default class AppClass extends React.Component {
           <button id="down" onClick={this.getNextIndex}>DOWN</button>
           <button id="reset" onClick={this.reset}>reset</button>
         </div>
-        <form>
+        <form onSubmit={this.onSubmit}>
           <input 
           id="email" 
           type="email"
