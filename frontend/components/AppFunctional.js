@@ -117,8 +117,9 @@ export default function AppFunctional(props) {
         setMessage(res.data.message)
       })
       .catch(err =>{
-        console.error(err)
+        setMessage(err.response.data.message)
       })
+      
     // Use a POST request to send a payload to the server.
   }
 

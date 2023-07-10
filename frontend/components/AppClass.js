@@ -103,7 +103,7 @@ export default class AppClass extends React.Component {
   onSubmit = (e) => {
     e.preventDefault();
     const [xCoor, yCoor] = this.getXY();
-    this.setState({...this.state, email: '', index: 4, steps:0})
+    this.setState({...this.state, email: ''})
     axios.post(`http://localhost:9000/api/result`,{ 
       "x": xCoor,
       "y": yCoor,
@@ -113,8 +113,9 @@ export default class AppClass extends React.Component {
         this.setState({...this.state,message:res.data.message})
       })
       .catch(err =>{
-        console.error(err)
+        this.setState({...this.state, message: err.response.data.message})
       })
+      
     
   }
 
