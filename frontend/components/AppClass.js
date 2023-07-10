@@ -33,19 +33,50 @@ export default class AppClass extends React.Component {
     // returns the fully constructed string.
   }
 
-  reset = () => {
-    // Use this helper to reset all states to their initial values.
+  reset = (e) => {
+   e.preventDefault();
+   this.setState(initialState);
   }
 
   getNextIndex = (direction) => {
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
+    const jump = direction.target.id;
+    //up move
+    if (jump === 'up'){
+      if (this.state.index<3)
+        this.setState({...this.state, message:`You can't go up`})
+      else
+        this.move(this.state.index-3)
+    }
+    //down move
+    if (jump === 'down'){
+      if (this.state.index>5)
+      this.setState({...this.state, message:`You can't go down`})
+      else
+        this.move(this.state.index+3)
+    }
+    //left move
+    if (jump === 'left'){
+      if (this.state.index%3 === 0)
+      this.setState({...this.state, message:`You can't go left`})
+      else
+        this.move(this.state.index-1)
+    }
+    //right move
+    if (jump === 'right'){
+      if ([2,5,8].includes(this.state.index))
+      this.setState({...this.state, message:`You can't go right`})
+      else
+        this.move(this.state.index+1)
+    }
   }
 
-  move = (e) => {
+  move = (newIndex) => {
     // This event handler can use the helper above to obtain a new index for the "B",
     // and change any states accordingly.
+    this.setState({...this.state, steps: this.state.steps +1, index: newIndex});
   }
 
   onChange = (e) => {
@@ -78,11 +109,11 @@ export default class AppClass extends React.Component {
           <h3 id="message"></h3>
         </div>
         <div id="keypad">
-          <button id="left">LEFT</button>
-          <button id="up">UP</button>
-          <button id="right">RIGHT</button>
-          <button id="down">DOWN</button>
-          <button id="reset">reset</button>
+          <button id="left" onClick={this.getNextIndex}>LEFT</button>
+          <button id="up" onClick={this.getNextIndex}>UP</button>
+          <button id="right" onClick={this.getNextIndex}>RIGHT</button>
+          <button id="down" onClick={this.getNextIndex}>DOWN</button>
+          <button id="reset" onClick={this.reset}>reset</button>
         </div>
         <form>
           <input 
