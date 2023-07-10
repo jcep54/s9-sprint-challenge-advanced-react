@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 
 // Suggested initial states
 const initialMessage = ''
@@ -100,7 +101,20 @@ export default class AppClass extends React.Component {
   }
 
   onSubmit = (e) => {
-    // Use a POST request to send a payload to the server.
+    e.preventDefault();
+    const [xCoor, yCoor] = this.getXY();
+    this.setState({...this.state, email: ''})
+    axios.post(`http://localhost:9000/api/result`,{ 
+      "x": xCoor,
+      "y": yCoor,
+      "steps": this.state.steps, 
+      "email": this.state.email })
+      .then(res =>{
+        this.setState({...this.state,message:res.data.message})
+      })
+      .catch(err =>{
+        console.error(err)
+      })
   }
 
   render() {
